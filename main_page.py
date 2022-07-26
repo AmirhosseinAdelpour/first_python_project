@@ -10,14 +10,15 @@ from tkinter import messagebox
 import captcha
 from captcha.image import ImageCaptcha
 from PIL import ImageTk, Image
-import click
+
+
 
 
 # app setting
 
 win = Tk()
 win.title("Sign up")
-win.geometry("500x500")
+win.geometry("500x600")
 win.resizable(False, False)
 app_icon = PhotoImage(file="app-icon.jpg")
 win.iconphoto(False, app_icon)
@@ -28,27 +29,60 @@ win.iconphoto(False, app_icon)
 head_frame = Frame(win)
 head_frame.pack()
 
-# email & password
-
 entry_lbl = Label(head_frame, text="Fill the blanks to sign up", font=("courier", 15))
 entry_lbl.pack(pady=20)
+
+# name lbl
+name_lbl = Label(head_frame, text="Name",  font=("courier, 10"))
+name_lbl.pack()
+
+name_input = Entry(head_frame, width=50)
+name_input.pack()
+
+# name validation
+
+def name_validation(name):
+    if len(name) < 4 :
+        return False
+    else:
+        return True
+
+# phone number
+
+phone_number = Label(head_frame,text="Phone number",  font=("courier, 10") )
+phone_number.pack()
+
+phone_number_input = Entry(head_frame, width=50)
+phone_number_input.pack()
+
+# phone number validation
+
+def phone_number_validation(phone):
+    if len(phone) == 11:
+        if phone[0] == "0" and phone[1] == "9":
+            return True
+    else:
+        return False
+
+
+# email & password
 
 email_input_lbl = Label(head_frame, text="Email", font=("courier, 10"))
 email_input_lbl.pack()
 email_input = Entry(head_frame, width=50)
 email_input.pack()
 
-password_input_lbl = Label(head_frame, text="Password", font=("courier, 10"))
-password_input_lbl.pack()
-
-password_confirm_input = Entry(head_frame, width=50, show="*")
-password_confirm_input.pack()
-
-password_confirm_input_lbl = Label(head_frame, text="Confirm Password", font=("courier, 10"))
-password_confirm_input_lbl.pack()
+password_lbl = Label(head_frame, text="Password", font=("courier, 10"))
+password_lbl.pack()
 
 password_input = Entry(head_frame, width=50, show="*")
 password_input.pack()
+
+password_confirm_lbl = Label(head_frame, text="Confirm Password", font=("courier, 10"))
+password_confirm_lbl.pack()
+
+password_confirm_input = Entry(head_frame, width=50, show="*")
+password_confirm_input.pack()
 
 # regex
 
@@ -93,7 +127,7 @@ def change_captcha():
 click_image = PhotoImage(file="test.png")
 
 recaptcha_btn = Button(head_frame, width=30,height=30, image=click_image, command=change_captcha)
-recaptcha_btn.place(x=240, y=215)
+recaptcha_btn.place(x=240, y=295)
 
 
 # password validation
@@ -105,7 +139,8 @@ def pass_validation():
     if re.search(match_re, password_input.get()):
         if password_input.get() == password_confirm_input.get():
             if captcha_entry.get() == captcha_text:
-                messagebox.showinfo("Logged in", "You successfully logged in!")
+                win.destroy()
+                import email_verification_page
             else:
                 messagebox.showerror("captcha error", "Please fill the captcha blank to submit that you are not a bot!!")
         else:
@@ -118,10 +153,21 @@ def pass_validation():
 
 def sign_up():
     email = email_input.get()
-    if check(email) == False:
-        messagebox.showerror("email error", "wrong email!! try again")
+    if len(name_input.get()) == 0 and len(phone_number_input.get()) == 0 and len(email_input.get()) == 0\
+        and len(password_input.get()) == 0 and len(password_confirm_input.get()) == 0:
+        messagebox.showerror("Emtry blanks!!"," please fill the blanks..!") 
     else:
-        pass_validation()
+        if name_validation(name_input.get()):
+            if phone_number_validation(phone_number_input.get()):
+                if check(email):
+                    pass_validation()
+                else:
+                    messagebox.showerror("email error", "wrong email!! try again")
+            else:
+                messagebox.showerror("Invalid number","Your phone number is invalid!!")
+        else:
+            messagebox.showerror("Invalid name","Your name lengh should be more than 4 characters!!")
+
 
 
 # sign up button
