@@ -11,12 +11,22 @@ from PIL import ImageTk, Image
 import email_verfication_send as evs
 import email_verification_page as evp
 import login_page
+import sql_python
+import mysql.connector
+from mysql.connector import connection
+
+
 
 # app setting
 
 class Main_Page:
 
-    test = str()
+    e_mail = ""
+
+    db_name = ""
+    db_phone_number = ""
+    db_email = ""
+    db_password =""
 
     def __init__(self):
 
@@ -143,8 +153,31 @@ class Main_Page:
             if re.search(match_re, password_input.get()):
                 if password_input.get() == password_confirm_input.get():
                     if captcha_entry.get() == captcha_text:
-                        Main_Page.test = email_input.get()
-                        evs.Send_Email.user_email = Main_Page.test
+
+                        Main_Page.e_mail = email_input.get()
+
+                        Main_Page.db_name += name_input.get()
+                        Main_Page.db_phone_number += phone_number_input.get()
+                        Main_Page.db_email += email_input.get()
+                        Main_Page.db_password += password_input.get()
+                        conn = mysql.connector.connect(
+                            user = "pasha_adel",
+                            passwd = "Amir09011597145",
+                            host = "localhost",
+                            database = "users")
+                        cursorObject = conn.cursor()
+
+                        sql = "INSERT INTO python_users ( name, phone_number, email, passwr) VALUES ( %s, %s, %s, %s)"
+                        val = (Main_Page.db_name, Main_Page.db_phone_number, Main_Page.db_email, Main_Page.db_password)
+                        cursorObject.execute(sql, val)
+                        conn.commit()
+                        
+                        
+                        
+
+
+
+                        evs.Send_Email.user_email = Main_Page.e_mail
                         RUN3 = evs.Send_Email()
                         win.destroy()
                         run2 = evp.Email_Page()
@@ -187,6 +220,7 @@ class Main_Page:
         def login_func():
             win.destroy()
             login_page.Login()
+            
 
         # login label
 
