@@ -11,11 +11,10 @@ class Send_Email:
     user_email = ""
 
     host_email = "smtp.gmail.com"
-    host_email_user = "salehtest22002@gmail.com"
+    host_email_user = "pasha.testcode@gmail.com"
 
-    host_email_password = "vshyekedzycrdyre"
+    host_email_password = "dzijupedfyjikkli"
 
-    #previous password:hnhzbipxfctpfwhh
 
     email_port_ssl = 465
     choice = str(random.randint(100000, 999999))

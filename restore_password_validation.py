@@ -29,11 +29,6 @@ class Restore_Password_Validation:
         restore_email_input = Entry(restore_root, width=50)
         restore_email_input.pack()
 
-        restore_password_lbl = Label(restore_root, text="Password", font="plain")
-        restore_password_lbl.pack(pady=10)
-
-        restore_password_input = Entry(restore_root, width=50)
-        restore_password_input.pack()
         # check btn func
         def check_btn_func():
             Restore_Password_Validation.checked  = True

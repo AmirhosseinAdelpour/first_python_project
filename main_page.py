@@ -1,7 +1,7 @@
+from modulefinder import IMPORT_NAME
 from tkinter import *
 import random
 from tkinter.font import BOLD
-import webbrowser
 import datetime
 import re
 from tkinter import messagebox
@@ -9,11 +9,11 @@ import captcha
 from captcha.image import ImageCaptcha
 from PIL import ImageTk, Image
 import email_verfication_send as evs
-import email_verification_page as evp
-import login_page
-import sql_python
 import mysql.connector
 from mysql.connector import connection
+import login_page
+import email_verification_page
+
 
 
 
@@ -26,7 +26,7 @@ class Main_Page:
     db_name = ""
     db_phone_number = ""
     db_email = ""
-    db_password =""
+    db_password = ""
 
     def __init__(self):
 
@@ -148,39 +148,41 @@ class Main_Page:
         password_regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,18}$"
         match_re = re.compile(password_regex)
 
+        def send_to_sql():
+            global name_insert, phone_number_insert, email_insert, password_insert
+            conn = mysql.connector.connect(
+            user = "pasha_adel",
+            passwd = "Amir09011597145",
+            host = "localhost",
+            database = "users")
+            cursorObject = conn.cursor()
+
+            sql = "INSERT INTO python_users ( name, phone_number, email, passwr) VALUES ( %s, %s, %s, %s)"
+            val = (Main_Page.db_name, Main_Page.db_phone_number,
+            Main_Page.db_email, Main_Page.db_password)
+            cursorObject.execute(sql, val)
+            conn.commit()
+
         def pass_validation():
             global captcha
             if re.search(match_re, password_input.get()):
                 if password_input.get() == password_confirm_input.get():
                     if captcha_entry.get() == captcha_text:
 
-                        Main_Page.e_mail = email_input.get()
-
                         Main_Page.db_name += name_input.get()
                         Main_Page.db_phone_number += phone_number_input.get()
                         Main_Page.db_email += email_input.get()
                         Main_Page.db_password += password_input.get()
-                        conn = mysql.connector.connect(
-                            user = "pasha_adel",
-                            passwd = "Amir09011597145",
-                            host = "localhost",
-                            database = "users")
-                        cursorObject = conn.cursor()
 
-                        sql = "INSERT INTO python_users ( name, phone_number, email, passwr) VALUES ( %s, %s, %s, %s)"
-                        val = (Main_Page.db_name, Main_Page.db_phone_number, Main_Page.db_email, Main_Page.db_password)
-                        cursorObject.execute(sql, val)
-                        conn.commit()
-                        
-                        
-                        
+                        send_to_sql()
 
-
-
+                        Main_Page.e_mail = email_input.get()
                         evs.Send_Email.user_email = Main_Page.e_mail
                         RUN3 = evs.Send_Email()
+
                         win.destroy()
-                        run2 = evp.Email_Page()
+                        run2 = email_verification_page.Email_Page()
+
                     else:
                         messagebox.showerror("captcha error", "Please fill the captcha blank to submit that you are not a bot!!")
                 else:
@@ -228,11 +230,8 @@ class Main_Page:
         command=login_func, bd=0)
         login_lbl.pack()
 
-        # login_lbl.bind("<Button-1>", login_func)
 
         # time & date
-
-
         def time_func():
             global time, time_date
             time = datetime.datetime.now()
@@ -248,11 +247,9 @@ class Main_Page:
 
         time_lbl = Label(win, text=time_date, font=("courier", 15))
         time_lbl.pack(pady=20)
-
-
-
         time_func()
         win.mainloop()
 
 if __name__ == "__main__":
     run_main_page = Main_Page()
+

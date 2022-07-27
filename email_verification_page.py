@@ -3,10 +3,12 @@ from time import time
 from tkinter import *
 import email_verfication_send as evs
 from tkinter import messagebox
-import main_page
 import time
 import sql_python as sp
-import sql_python
+import mysql.connector
+from mysql.connector import connection
+import main_page
+
 
 class Email_Page:
         
@@ -32,14 +34,10 @@ click to send""", font=("plain",15))
                         if self.minute == 0 and self.second == 0:
                                 messagebox.showerror("Time out!", "Code time out! resend code")
                         elif evs.Send_Email.choice == code_entry.get():
-
-                                # sql_python.sqlInsert()
-
                                 
-
                                 messagebox.showinfo("Successfully signed in!!", "You were successfully signed in...\nEnjoy the app.. (:")
                                 timer_lbl.destroy()
-                                
+
                         else:
                                 messagebox.showerror("Invalid Code","Your code is invalid")
 

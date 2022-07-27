@@ -1,4 +1,3 @@
-from re import L
 from tkinter import *
 import random
 from tkinter.font import BOLD
@@ -80,8 +79,8 @@ class Login:
         forget_password_lbl = Label(login_root, text="Forgot your password?", font=("courier"))
         forget_password_lbl.pack()
 
-        forget_password_lbl2 = Label(login_root, text="Click here", font=("courier", 8), fg="blue", cursor="hand2")
-        forget_password_lbl2.pack()
+        forget_password_btn = Button(login_root, text="Click here", font=("courier", 8), fg="blue", cursor="hand2", bd=0)
+        forget_password_btn.pack(pady=10)
 
         # time update  func
 
