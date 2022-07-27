@@ -8,7 +8,7 @@ from tkinter import StringVar
 class Send_Email:
     # test, dint forget to change it
     # user_email = str()
-    user_email = "pasha.adel2@gmail.com"
+    user_email = ""
 
     host_email = "smtp.gmail.com"
     host_email_user = "amiradelpour0901@gmail.com"

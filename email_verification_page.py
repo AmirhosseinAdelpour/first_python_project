@@ -28,8 +28,11 @@ click to send""", font=("plain",15))
 
                 # submit func 
                 def submit_func():
-                        if  evs.Send_Email.choice == code_entry.get():
+                        if self.minute == 0 and self.second == 0:
+                                messagebox.showerror("Time out!", "Code time out! resend code")
+                        elif evs.Send_Email.choice == code_entry.get():
                                 messagebox.showinfo("Successfully signed in!!", "You were successfully signed in...\nEnjoy the app.. (:")
+                                timer_lbl.destroy()
                         else:
                                 messagebox.showerror("Invalid Code","Your code is invalid")
 
@@ -46,30 +49,38 @@ click to send""", font=("plain",15))
                         submit_btn.pack(pady=5)
 
                         # timer  lbl
-                        self.minute = 1
-                        self.second = 3
-                        timer = f"0{self.minute}:{self.second}"
+                        def timer_lbl_func():
+                                global timer, timer_lbl
+                                self.minute = 1
+                                self.second = 60
+                                timer = f"0{self.minute}:{self.second}"
 
-                        timer_lbl = Label(root, text=timer, font=("plain",12))
-                        timer_lbl.pack(pady=15)
+                                timer_lbl = Label(root, text=timer, font=("plain",12))
+                                timer_lbl.pack(pady=15)
+                        timer_lbl_func()
 
                         # resend func
                         def resend_func():
                                 evs.Send_Email()
+                                timer_lbl_func()
+                                timer_func()
+                                resend_btn.destroy()
 
 
                         # timer func
 
                         def timer_func():
+                                global resend_btn
                                 self.second -= 1
                                 if self.minute == 0 and self.second == 0:
                                         resend_btn = Button(root, text="Resend Code", font=("courier", 10), fg="blue",
                                          cursor="hand2",bd=0,  command=resend_func)
                                         resend_btn.pack(pady=15)
                                         timer_lbl.destroy()
-                                if self.second == 0:
+
+                                elif self.second == 0:
                                         self.minute -= 1
-                                        self.second = 3
+                                        self.second = 60
 
                                 timer2 = f"0{self.minute}:{self.second}"
                                 timer_lbl.config(text=timer2)
