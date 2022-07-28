@@ -5,6 +5,7 @@ import captcha
 from captcha.image import ImageCaptcha
 from PIL import ImageTk, Image
 import datetime
+import restore_password_validation as rpv
 
 class Login:
 
@@ -74,13 +75,22 @@ class Login:
         login_btn = Button(login_root, text="Login", width=20, bd=5, relief="ridge")
         login_btn.pack(pady=20)
 
+        #  forget_password_func
+
+        def forget_password_func():
+            login_root.destroy()
+            rpv.Restore_Password_Validation()
+            
         # forgot password
 
         forget_password_lbl = Label(login_root, text="Forgot your password?", font=("courier"))
         forget_password_lbl.pack()
 
-        forget_password_btn = Button(login_root, text="Click here", font=("courier", 8), fg="blue", cursor="hand2", bd=0)
+        forget_password_btn = Button(login_root, text="Click here", font=("courier", 8), fg="blue", cursor="hand2", bd=0,
+        command=forget_password_func)
         forget_password_btn.pack(pady=10)
+
+
 
         # time update  func
 

@@ -43,6 +43,8 @@ class Main_Page:
         head_frame = Frame(win)
         head_frame.pack()
 
+        # head lbl 
+
         entry_lbl = Label(head_frame, text="Sign Up", font=("plain", 30, BOLD))
         entry_lbl.pack(pady=20)
 
@@ -63,8 +65,8 @@ class Main_Page:
 
         # phone number
 
-        phone_number = Label(head_frame,text="Phone number",  font=("courier, 10") )
-        phone_number.pack()
+        phone_number_lbl = Label(head_frame,text="Phone number",  font=("courier, 10") )
+        phone_number_lbl.pack()
 
         phone_number_input = Entry(head_frame, width=50)
         phone_number_input.pack()
@@ -148,6 +150,8 @@ class Main_Page:
         password_regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,18}$"
         match_re = re.compile(password_regex)
 
+        # sql 
+
         def send_to_sql():
             global name_insert, phone_number_insert, email_insert, password_insert
             conn = mysql.connector.connect(
@@ -169,19 +173,16 @@ class Main_Page:
                 if password_input.get() == password_confirm_input.get():
                     if captcha_entry.get() == captcha_text:
 
+                        Main_Page.e_mail = email_input.get()
+                        evs.Send_Email.user_email = Main_Page.e_mail
+                        # RUN3 = evs.Send_Email()
+
                         Main_Page.db_name += name_input.get()
                         Main_Page.db_phone_number += phone_number_input.get()
                         Main_Page.db_email += email_input.get()
                         Main_Page.db_password += password_input.get()
 
-                        send_to_sql()
-
-                        Main_Page.e_mail = email_input.get()
-                        evs.Send_Email.user_email = Main_Page.e_mail
-                        RUN3 = evs.Send_Email()
-
-                        win.destroy()
-                        run2 = email_verification_page.Email_Page()
+                        destroy_btn_lbl()
 
                     else:
                         messagebox.showerror("captcha error", "Please fill the captcha blank to submit that you are not a bot!!")
@@ -189,9 +190,6 @@ class Main_Page:
                     messagebox.showerror("password confirmation error", "Password doesn't match!!")
             else:
                 messagebox.showerror("password error", "Invalid password!!")
-
-        # sign_up button func
-
 
         def sign_up():
             email = email_input.get()
@@ -211,6 +209,91 @@ class Main_Page:
                     messagebox.showerror("Invalid name","Your name lengh should be more than 4 characters!!")
 
 
+        # destroy btn & lbls for email verification
+        def destroy_btn_lbl():
+            entry_lbl.config(text="Email Verification")
+            name_lbl.destroy()
+            name_input.destroy()
+            phone_number_lbl.destroy()
+            phone_number_input.destroy()
+            email_input_lbl.destroy()
+            email_input.destroy()
+            password_lbl.destroy()
+            password_input.destroy()
+            password_confirm_lbl.destroy()
+            password_confirm_input.destroy()
+            captcha_lbl.destroy()
+            captcha_entry.destroy()
+            login_lbl.destroy()
+            sign_up_btn.destroy()
+
+            # submit btn
+
+            def submit_func():
+                if minute == 0 and second == 0:
+                    messagebox.showerror("Time out!", "Code time out! resend code")
+                # elif evs.Send_Email.choice == code_entry.get():
+                elif code_entry.get() == "12":
+                    send_to_sql()
+                    messagebox.showinfo("Successfully signed in!!", "You were successfully signed in...\nEnjoy the app.. (:")
+                    timer_lbl.destroy()
+                    code_entry.delete(0, 'end')
+                else:
+                    messagebox.showerror("Invalid Code","Your code is invalid")
+
+            # validation code lbl
+            code_lbl = Label(head_frame, text="""We sent a validation code to your email. Enter the code below""", font=("plain",10))
+            code_lbl.pack()
+
+            # validation lbl entry
+            code_entry = Entry(head_frame, width=30)
+            code_entry.pack(pady=10)
+
+            # validation btn
+            submit_btn = Button(head_frame, width=6, text="Submit", font="courier", bd=5, relief="ridge", 
+            command=submit_func)
+            submit_btn.pack(pady=5)
+
+            # timer  lbl
+            def timer_lbl_func():
+                global timer, timer_lbl, minute, second
+                minute = 1
+                second = 60
+                timer = f"0{minute}:{second}"
+
+                timer_lbl = Label(head_frame, text=timer, font=("plain",12))
+                timer_lbl.pack(pady=15)
+
+            # timer func
+            def timer_func():
+                global resend_btn, second, minute
+                second -= 1
+                if minute == 0 and second == 0:
+                    resend_btn = Button(head_frame, text="Resend Code", font=("courier", 10), fg="blue",
+                    cursor="hand2",bd=0, command=resend_func)
+                    resend_btn.pack(pady=15)
+                    timer_lbl.destroy()
+
+                elif second == 0:
+                    minute -= 1
+                    second = 60
+
+                timer2 = f"0{minute}:{second}"
+                timer_lbl.config(text=timer2)
+                timer_lbl.after(1000, timer_func)
+
+            timer_lbl_func()
+            timer_func()
+
+
+
+            
+
+            def resend_func():
+                evs.Send_Email()
+                timer_lbl_func()
+                timer_func()
+                resend_btn.destroy()
 
         # sign up button
 
