@@ -70,6 +70,7 @@ class Login:
         recaptcha_btn = Button(login_root, width=30,height=30, image=click_image, command=change_captcha)
         recaptcha_btn.place(x=335, y=260)
 
+
         # login btn
 
         login_btn = Button(login_root, text="Login", width=20, bd=5, relief="ridge")
@@ -80,7 +81,7 @@ class Login:
         def forget_password_func():
             login_root.destroy()
             rpv.Restore_Password_Validation()
-            
+
         # forgot password
 
         forget_password_lbl = Label(login_root, text="Forgot your password?", font=("courier"))
