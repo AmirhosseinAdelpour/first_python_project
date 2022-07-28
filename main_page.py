@@ -36,23 +36,24 @@ class Main_Page:
         win.resizable(False, False)
         app_icon = PhotoImage(file="app-icon.jpg")
         win.iconphoto(False, app_icon)
+        win.config(bg="white")
 
 
         # head frame
 
-        head_frame = Frame(win)
+        head_frame = Frame(win, bg="white")
         head_frame.pack()
 
         # head lbl 
 
-        entry_lbl = Label(head_frame, text="Sign Up", font=("plain", 30, BOLD))
-        entry_lbl.pack(pady=20)
+        head_lbl = Label(head_frame, text="Sign Up", font=("plain", 30, BOLD), bg="white")
+        head_lbl.pack(pady=20)
 
         # name lbl
-        name_lbl = Label(head_frame, text="Name",  font=("courier, 10"))
+        name_lbl = Label(head_frame, text="Name",  font=("courier, 10"), bg="white")
         name_lbl.pack()
 
-        name_input = Entry(head_frame, width=50)
+        name_input = Entry(head_frame, width=50, border=2, relief="ridge")
         name_input.pack()
 
         # name validation
@@ -65,10 +66,10 @@ class Main_Page:
 
         # phone number
 
-        phone_number_lbl = Label(head_frame,text="Phone number",  font=("courier, 10") )
+        phone_number_lbl = Label(head_frame,text="Phone number",  font=("courier, 10"), bg="white" )
         phone_number_lbl.pack()
 
-        phone_number_input = Entry(head_frame, width=50)
+        phone_number_input = Entry(head_frame, width=50, border=2, relief="ridge")
         phone_number_input.pack()
 
         # phone number validation
@@ -83,21 +84,21 @@ class Main_Page:
 
         # email & password
 
-        email_input_lbl = Label(head_frame, text="Email", font=("courier, 10"))
+        email_input_lbl = Label(head_frame, text="Email", font=("courier, 10"), bg="white")
         email_input_lbl.pack()
-        email_input = Entry(head_frame, width=50)
+        email_input = Entry(head_frame, width=50, border=2, relief="ridge")
         email_input.pack()
 
-        password_lbl = Label(head_frame, text="Password", font=("courier, 10"))
+        password_lbl = Label(head_frame, text="Password", font=("courier, 10"), bg="white")
         password_lbl.pack()
 
-        password_input = Entry(head_frame, width=50, show="*")
+        password_input = Entry(head_frame, width=50, show="*", border=2, relief="ridge")
         password_input.pack()
 
-        password_confirm_lbl = Label(head_frame, text="Confirm Password", font=("courier, 10"))
+        password_confirm_lbl = Label(head_frame, text="Confirm Password", font=("courier, 10"), bg="white")
         password_confirm_lbl.pack()
 
-        password_confirm_input = Entry(head_frame, width=50, show="*")
+        password_confirm_input = Entry(head_frame, width=50, show="*", border=2, relief="ridge")
         password_confirm_input.pack()
 
         # regex
@@ -131,7 +132,7 @@ class Main_Page:
         captcha_lbl = Label(head_frame, image=my_image)
         captcha_lbl.pack(pady=10)
 
-        captcha_entry = Entry(head_frame)
+        captcha_entry = Entry(head_frame, border=2, relief="ridge")
         captcha_entry.pack()
 
         # recaptcha
@@ -143,7 +144,7 @@ class Main_Page:
         click_image = PhotoImage(file="test.png")
 
         recaptcha_btn = Button(head_frame, width=30,height=30, image=click_image, command=change_captcha)
-        recaptcha_btn.place(x=240, y=320)
+        recaptcha_btn.place(x=240, y=330)
 
 
         # password validation
@@ -175,7 +176,7 @@ class Main_Page:
 
                         Main_Page.e_mail = email_input.get()
                         evs.Send_Email.user_email = Main_Page.e_mail
-                        # RUN3 = evs.Send_Email()
+                        RUN3 = evs.Send_Email()
 
                         Main_Page.db_name += name_input.get()
                         Main_Page.db_phone_number += phone_number_input.get()
@@ -211,7 +212,7 @@ class Main_Page:
 
         # destroy btn & lbls for email verification
         def destroy_btn_lbl():
-            entry_lbl.config(text="Email Verification")
+            head_lbl.config(text="Email Verification")
             name_lbl.destroy()
             name_input.destroy()
             phone_number_lbl.destroy()
@@ -227,13 +228,12 @@ class Main_Page:
             login_lbl.destroy()
             sign_up_btn.destroy()
 
-            # submit btn
+            # submit func
 
             def submit_func():
                 if minute == 0 and second == 0:
                     messagebox.showerror("Time out!", "Code time out! resend code")
-                # elif evs.Send_Email.choice == code_entry.get():
-                elif code_entry.get() == "12":
+                elif evs.Send_Email.choice == code_entry.get():
                     send_to_sql()
                     messagebox.showinfo("Successfully signed in!!", "You were successfully signed in...\nEnjoy the app.. (:")
                     timer_lbl.destroy()
@@ -242,15 +242,15 @@ class Main_Page:
                     messagebox.showerror("Invalid Code","Your code is invalid")
 
             # validation code lbl
-            code_lbl = Label(head_frame, text="""We sent a validation code to your email. Enter the code below""", font=("plain",10))
+            code_lbl = Label(head_frame, text="""We sent a validation code to your email. Enter the code below""", font=("plain",10), bg="white")
             code_lbl.pack()
 
             # validation lbl entry
-            code_entry = Entry(head_frame, width=30)
+            code_entry = Entry(head_frame, width=30, border=2, relief="ridge")
             code_entry.pack(pady=10)
 
             # validation btn
-            submit_btn = Button(head_frame, width=6, text="Submit", font="courier", bd=5, relief="ridge", 
+            submit_btn = Button(head_frame, width=6, text="Submit", font="courier", bd=2, relief="ridge", 
             command=submit_func)
             submit_btn.pack(pady=5)
 
@@ -261,7 +261,7 @@ class Main_Page:
                 second = 60
                 timer = f"0{minute}:{second}"
 
-                timer_lbl = Label(head_frame, text=timer, font=("plain",12))
+                timer_lbl = Label(head_frame, text=timer, font=("plain",12), bg="white")
                 timer_lbl.pack(pady=15)
 
             # timer func
@@ -297,8 +297,8 @@ class Main_Page:
 
         # sign up button
 
-        sign_up_btn = Button(head_frame, text="sign up", width=20, bd=5, relief="ridge", command=sign_up)
-        sign_up_btn.pack(pady=20)
+        sign_up_btn = Button(head_frame, text="sign up", font=("plain", 10), width=20, bd=5, relief="ridge", command=sign_up)
+        sign_up_btn.pack(pady=10)
 
         # login function
 
@@ -310,7 +310,7 @@ class Main_Page:
         # login label
 
         login_lbl = Button(head_frame, text="Already have an account?", fg="blue", cursor="hand2",
-        command=login_func, bd=0)
+        command=login_func, bd=0, bg="white")
         login_lbl.pack()
 
 
@@ -328,7 +328,7 @@ class Main_Page:
         time_date = time.strftime("%H:%M:%S %p\n%Y/%m/%d")
 
 
-        time_lbl = Label(win, text=time_date, font=("courier", 15))
+        time_lbl = Label(win, text=time_date, font=("courier", 15), bg="white")
         time_lbl.pack(pady=20)
         time_func()
         win.mainloop()

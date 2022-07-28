@@ -11,9 +11,9 @@ class Send_Email:
     user_email = ""
 
     host_email = "smtp.gmail.com"
-    host_email_user = "amiradelpour0901@gmail.com"
+    host_email_user = "code.send22@gmail.com"
 
-    host_email_password = "xmgvjwafecrfhfjp"
+    host_email_password = "jvxiaeqhdhfmyalp"
 
 
     email_port_ssl = 465
