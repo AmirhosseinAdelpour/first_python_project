@@ -19,13 +19,14 @@ class Email_Page:
                 root.resizable(False, False)
                 app_icon = PhotoImage(file="app-icon.jpg")
                 root.iconphoto(False, app_icon)
+                root.config(bg="white")
 
                 # head lbl
-                Label(root, text="Code verification", font=("plain", 30)).pack(pady=20)
+                Label(root, text="Code verification", font=("plain", 30), bg="white").pack(pady=20)
 
                 # validation code lbl
                 code_lbl = Label(root,text="""We will send a validation code to your email.
-click to send""", font=("plain",15))
+click to send""", font=("plain",15), bg="white")
                 code_lbl.pack()
                 
 
@@ -60,7 +61,7 @@ click to send""", font=("plain",15))
                                 self.second = 60
                                 timer = f"0{self.minute}:{self.second}"
 
-                                timer_lbl = Label(root, text=timer, font=("plain",12))
+                                timer_lbl = Label(root, text=timer, font=("plain",12),bg="white")
                                 timer_lbl.pack(pady=15)
                         timer_lbl_func()
 

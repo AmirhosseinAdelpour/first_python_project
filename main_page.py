@@ -1,4 +1,3 @@
-from modulefinder import IMPORT_NAME
 from tkinter import *
 import random
 from tkinter.font import BOLD
