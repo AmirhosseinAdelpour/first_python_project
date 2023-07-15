@@ -1,2 +1,2 @@
 # first_python_project
-this my first python project before starting AI.
+this is my first python project before starting AI.
